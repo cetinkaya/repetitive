@@ -1,5 +1,7 @@
 # 2015 - Ahmet Cetinkaya
 
+module Repetitive
+
 class Task
   attr_reader :timer
   
@@ -34,7 +36,8 @@ class Repeater
   # of tasks are negligible.
   #
   # Example:
-  #   repeater = Repeater.new
+  #   require "repetitive"
+  #   repeater = Repetitive::Repeater.new
   #   repeater.every(10) do
   #     puts "10 seconds"
   #   end
@@ -47,7 +50,8 @@ class Repeater
   # repetitively executed.
   #
   # Example:
-  #   repeater = Repeater.new
+  #   require "repetitive"
+  #   repeater = Repetitive::Repeater.new
   #   repeater.every(10) do # every 10 seconds print 10
   #     puts "10 seconds"
   #   end
@@ -65,4 +69,6 @@ class Repeater
       sleep(dt)
     end
   end
+end
+
 end
