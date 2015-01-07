@@ -27,11 +27,34 @@ class Repeater
   def initialize
     @tasks = []
   end
-
+  
+  # Add a task to be run every timer seconds, If starting_now is true,
+  # task is started immediately.  The task is to be provided as a
+  # block. The current implementation assumes that the running times
+  # of tasks are negligible.
+  #
+  # Example:
+  #   repeater = Repeater.new
+  #   repeater.every(10) do
+  #     puts "10 seconds"
+  #   end
+  #   repeater.run
   def every(timer, starting_now = true, &blk)
     @tasks<< Task.new(timer, starting_now, &blk)
   end
 
+  # Start repepater. The tasks (defined with method every) are
+  # repetitively executed.
+  #
+  # Example:
+  #   repeater = Repeater.new
+  #   repeater.every(10) do # every 10 seconds print 10
+  #     puts "10 seconds"
+  #   end
+  #   repeater.every(20) do # every 20 seconds print 20
+  #     puts "20 seconds"
+  #   end
+  #   repeater.run
   def run
     dt = 0
     while true
@@ -43,15 +66,3 @@ class Repeater
     end
   end
 end
-
-repeater = Repeater.new
-
-repeater.every(10.1) do # Every 10.1 seconds, print 10.1
-  puts "10.1"
-end
-
-repeater.every(20.1) do # Every 20.1 seconds, print 20.1
-  puts "20.1"
-end
-
-repeater.run
