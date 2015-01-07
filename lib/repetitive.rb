@@ -71,4 +71,24 @@ class Repeater
   end
 end
 
+class ThreadedRepeater < Repeater
+  # Start repepater. The tasks (defined with method every) are
+  # repetitively executed in different threads.
+  def run
+    threads = @tasks.map do |task|
+      Thread.new do
+        dt = 0
+        while true
+          dt = task.iterate(dt)
+          sleep(dt)
+        end
+      end
+    end
+
+    threads.each do |thread|
+      thread.join
+    end
+  end
+end
+
 end
