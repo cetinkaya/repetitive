@@ -3,32 +3,23 @@
 class Job
   attr_reader :timer
   
-  def initialize(timer, blk)
+  def initialize(timer, starting_now = true, &blk)
     @timer = timer
     @blk = blk
-    @time = 0
+    if starting_now
+      @time = 0
+    else
+      @time = timer
+    end
   end
 
   def iterate(dt)
+    @time -= dt
     if @time <= 0
       @blk.call
       @time = @timer
     end
-    @time -= dt
-  end
-end
-
-class Array
-  def gcd
-    mn = min
-    mn.step(1, -1) do |g|
-      divisible_by_all = true
-      each do |number|
-        divisible_by_all = false if number % g != 0
-      end
-      return g if divisible_by_all
-    end
-    return 1
+    @time
   end
 end
 
@@ -37,16 +28,17 @@ class Repeater
     @jobs = []
   end
 
-  def every(timer, &blk)
-    @jobs<< Job.new(timer, blk)
+  def every(timer, starting_now = true, &blk)
+    @jobs<< Job.new(timer, starting_now, &blk)
   end
 
   def run
-    dt = @jobs.map{|job| job.timer}.gcd
+    dt = 0
     while true
-      @jobs.each do |job|
+      remaining_times = @jobs.map do |job|
         job.iterate(dt)
       end
+      dt = remaining_times.min
       sleep(dt)
     end
   end
@@ -54,12 +46,12 @@ end
 
 repeater = Repeater.new
 
-repeater.every(10) do # Every 10 seconds, print 10
-  puts "10"
+repeater.every(10.1) do # Every 10.1 seconds, print 10.1
+  puts "10.1"
 end
 
-repeater.every(20) do # Every 20 seconds, print 20
-  puts "20"
+repeater.every(20.1) do # Every 20.1 seconds, print 20.1
+  puts "20.1"
 end
 
 repeater.run
