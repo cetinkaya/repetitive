@@ -1,6 +1,6 @@
 # 2015 - Ahmet Cetinkaya
 
-class Job
+class Task
   attr_reader :timer
   
   def initialize(timer, starting_now = true, &blk)
@@ -25,18 +25,18 @@ end
 
 class Repeater
   def initialize
-    @jobs = []
+    @tasks = []
   end
 
   def every(timer, starting_now = true, &blk)
-    @jobs<< Job.new(timer, starting_now, &blk)
+    @tasks<< Task.new(timer, starting_now, &blk)
   end
 
   def run
     dt = 0
     while true
-      remaining_times = @jobs.map do |job|
-        job.iterate(dt)
+      remaining_times = @tasks.map do |task|
+        task.iterate(dt)
       end
       dt = remaining_times.min
       sleep(dt)
