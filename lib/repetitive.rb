@@ -46,7 +46,7 @@ class Repeater
     @tasks<< Task.new(timer, starting_now, &blk)
   end
 
-  # Start repepater. The tasks (defined with method every) are
+  # Start repeater. The tasks (defined with method every) are
   # repetitively executed.
   #
   # Example:
@@ -72,7 +72,7 @@ class Repeater
 end
 
 class ThreadedRepeater < Repeater
-  # Start repepater. The tasks (defined with method every) are
+  # Start repeater. The tasks (defined with method every) are
   # repetitively executed in different threads.
   def run
     threads = @tasks.map do |task|
